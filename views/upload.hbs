@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload - {{ identity.title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="flex items-center justify-center p-12">
+        <div class="mx-auto w-full max-w-[550px]">
+            <form action="/auth/upload" method="POST" enctype="multipart/form-data">
+            {{#if message}}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+            <b class="block sm:inline">{{ message }}</b>
+            </div>
+            {{/if}}
+                <div class="mb-5">
+                    <label for="judul_berita" class="mb-3 block text-base font-medium text-[#07074D]">
+                        Judul Berita
+                    </label>
+                    <input type="text" name="judul_berita" id="judul_berita" placeholder="Ketik disini..." class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                </div>
+                <div class="mb-5">
+                    <label for="penulis" class="mb-3 block text-base font-medium text-[#07074D]">
+                        Penulis Berita
+                    </label>
+                    <input type="text" id="penulis" name="penulis" placeholder="Nama anda..." class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                </div>
+                <div class="mb-5">
+                    <label for="date" class="mb-3 block text-base font-medium text-[#07074D]">
+                        Date
+                    </label>
+                    <input type="date" name="date" id="date" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                </div>
+                <div class="mb-5">
+                    <label for="isi" class="mb-3 block text-base font-medium text-[#07074D]">
+                        Isi Berita
+                    </label>
+                    <textarea rows="4" name="isi" id="isi" placeholder="Tulis berita disini..." class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"></textarea>
+                </div>
+
+                <!-- drag n drop form -->
+                <div class="flex items-center justify-center p-3 h-72 mt-10">
+                    <div class="w-full max-w-md p-9 bg-white rounded-lg shadow-lg">
+                        <h1 class="text-center text-2xl sm:text-2xl font-semibold mb-4 text-gray-800">Upload Foto Disini</h1>
+                        <div class="bg-gray-100 p-8 text-center rounded-lg border-dashed border-2 border-gray-300 hover:border-blue-500 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md" id="dropzone">
+                            <label for="gambar" class="cursor-pointer flex flex-col items-center space-y-2">
+                                <svg class="w-10 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <span class="text-gray-600">Drag and drop your image here</span>
+                                <span class="text-gray-500 text-sm">(or click to select)</span>
+                            </label>
+                            <input type="file" id="gambar" name="gambar" class="hidden" multiple>
+                        </div>
+                        <div class="mt-6 text-center" id="fileList"></div>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" class="mx-auto mb-20 hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('gambar');
+        const fileList = document.getElementById('fileList');
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('border-blue-500', 'border-2');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('border-blue-500', 'border-2');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-blue-500', 'border-2');
+
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleFiles(files);
+        });
+
+        function handleFiles(files) {
+            fileList.innerHTML = '';
+
+            for (const file of files) {
+                const listItem = document.createElement('div');
+                listItem.textContent = `${file.name} (${formatBytes(file.size)})`;
+                fileList.appendChild(listItem);
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>

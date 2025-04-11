@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin - Geniciel Life</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<style>
+
+</style>
+
+<body class=" text-white">
+
+<div class="flex h-screen">
+  <!-- Sidebar -->
+  <aside class="bg-gray-800 w-32 sm:w-80 flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out">
+    <div class="p-4">
+      <a href="/DashAdmin" class="flex d-flex text-center justify-start ">
+        <img src="/assets/logo genieciel.png" class="logo cursor-pointer w-12 mb-4" alt="Genieciel Logo"> <b>Dashboard Admin</b>
+      </a>
+      
+      <ul>
+        <li><a href="#" class="block py-2 px-4 hover:bg-gray-700">Berita</a></li>
+        <li><a href="/DataAdmin" class="block py-2 px-4 hover:bg-gray-700">Data Admin</a></li>
+
+      </ul>
+    </div>
+  </aside>
+<!-- Main Content -->
+<div class="dataAdmin m-2">
+  <div class="flex flex-col m-18">
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <div class="overflow-hidden">
+          <h1 class="text-black">Data Admin - Geniciel Life</h1>
+          <table class="divide-y divide-gray-200 dark:divide-neutral-700 table-auto">
+            <thead>
+              <tr>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">NIS</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nama</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Kelas</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Alamat</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Username</th>
+                <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each admindata}}
+              <tr>
+                <td class="px-6 py-4 text-black">{{this.NIS}}</td>
+                <td class="px-6 py-4 text-black">{{this.Nama}}</td>
+                <td class="px-6 py-4 text-black">{{this.Kelas}}</td>
+                <td class="px-6 py-4 text-black">{{this.alamat}}</td>
+                <td class="px-6 py-4 text-black">{{this.Username}}</td>
+                <td class="px-6 py-4 text-black flex">
+                  <button class="bg-red-600 hover:bg-red-300 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
+                    Delete
+                  </button>
+                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded ml-4">
+                    <img width="20" height="20" src="https://img.icons8.com/ios/50/FFFFFF/pencil--v1.png" alt="pencil--v1"/>
+                  </button>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+</body>
+</html>
